@@ -2,7 +2,7 @@ import React from 'react';
 
 const Banner = () => {
     return (
-        <div>
+        <div className='mt-4  '>
             <img
                 className="w-100 d-block d-xl-none" // Applies to all devices except extra-large (xl)
                 src="./banner.jpg"
