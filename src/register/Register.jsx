@@ -1,9 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../authprovider/AuthProvider';
 
 const Register = () => {
-    const { createUser } = useContext(UserContext);
+    const { createUser, user } = useContext(UserContext);
+    const navigate = useNavigate();
+
+
 
     const submit = (event) => {
         event.preventDefault();
@@ -15,18 +18,16 @@ const Register = () => {
 
         createUser(email, password)
             .then(userCredentials => {
-                const user = userCredential.user;
-                // Set the user's display name
-                return updateProfile(user, { displayName })
-                    .then(() => {
-                        // User's display name has been set
-                        return userCredential;
-                    });
+                userCredentials.user.displayName = name;
+                userCredentials.user.photoURL = photo;
                 form.reset();
+                navigate("/");
+
             })
             .catch(error => {
                 console.log(error.message)
             })
+
 
     }
     return (

@@ -1,35 +1,33 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { SiChef } from "react-icons/si";
 import { UserContext } from '../authprovider/AuthProvider';
-
-
-
+import './Header.css'
 const Header = () => {
-
-    const {user,signOutUser,loginBtnClick} = useContext(UserContext);
+    const { user, signOutUser } = useContext(UserContext);
     console.log(user);
+
     return (
-        <div className='d-flex justify-content-between pt-3 '>
+        <div className='d-flex justify-content-between pt-3'>
             <div>
                 <p className='fs-4 fw-bold'>Wanganama</p>
             </div>
             <div>
                 <SiChef className='fs-1'></SiChef>
             </div>
-            <div className='d-flex flex-row'>
-                <Link className='text-decoration-none  text-black ' to='/'>Home</Link>
-                <Link className='text-decoration-none ms-2 text-black ' to='/blog'>Blog</Link>
-                {
-                    user && loginBtnClick
-                    ?
-                    <div className='d-flex flex-row'>
-                        <p className='ms-2'>{user.displayName}</p>
-                        <Link onClick={signOutUser} className='text-decoration-none ms-2 text-black '>Logout</Link>
+            <div className='d-flex flex-row align-items-center'>
+                <NavLink className=' text-black ' to='/'>Home</NavLink>
+                <NavLink className=' ms-2 text-black ' to='/blog'>Blog</NavLink>
+                {user ? (
+                    <div
+                        className='d-flex flex-row align-items-center'
+                    >
+                        <img className='ms-2 rounded-circle' src={user.photoURL} alt="" width="32" height="32" />
+                        <NavLink onClick={signOutUser} className=' ms-2 text-black '>Logout</NavLink>
                     </div>
-                    :
-                    <Link className='text-decoration-none ms-2 text-black ' to='/login'>Login</Link>
-                }
+                ) : (
+                    <NavLink className=' ms-2 text-black ' to='/login'>Login</NavLink>
+                )}
             </div>
         </div>
     );

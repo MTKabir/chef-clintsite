@@ -6,27 +6,49 @@ import { UserContext } from '../authprovider/AuthProvider';
 
 
 const Login = () => {
-    const {signInUser,user} = useContext(UserContext);
-   
+    const {user , signInUser, signInWithGooglePopUp, signInWithGitPopUp } = useContext(UserContext);
+
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from?.pathname || "/";
+    
 
-    const submit = (event) =>{
+    const submit = (event) => {
         event.preventDefault();
         const form = event.target;
         const username = form.username.value;
         const password = form.password.value;
-        signInUser(username,password)
-        .then((userCredentials) =>{
-            userCredentials.user = user;
-            navigate(from)
-            form.reset();
-        })
-        .catch(error =>{
-            console.log(error.message);
-        })
+        signInUser(username, password)
+            .then((userCredentials) => {
+                navigate(from)
+                form.reset();
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
 
+    }
+    const handleGoogleSignIn = (event) => {
+        event.preventDefault();
+        signInWithGooglePopUp()
+            .then(result => {
+                console.log('success');
+                navigate(from);
+                console.log(result);
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+    }
+    const handleGithubSignIn = (event) => {
+        event.preventDefault();
+        signInWithGitPopUp()
+            .then(result => {
+                navigate(from);
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
     }
     return (
         <div className="container mt-5">
@@ -40,11 +62,11 @@ const Login = () => {
                             <form onSubmit={submit}>
                                 <div className="mb-3">
                                     <label htmlFor="username" className="form-label">Username</label>
-                                    <input type="text" className="form-control" id="username" name="username" placeholder="Enter your username" required/>
+                                    <input type="text" className="form-control" id="username" name="username" placeholder="Enter your username" required />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Password</label>
-                                    <input type="password" className="form-control" id="password" name="password" placeholder="Enter your password" required/>
+                                    <input type="password" className="form-control" id="password" name="password" placeholder="Enter your password" required />
                                 </div>
 
                                 <button type="submit" className="btn btn-primary">Login</button>
@@ -54,9 +76,13 @@ const Login = () => {
                                     <span className='ms-2 me-2'> or </span>
                                     <div className='border border-1 w-100 h-25'></div>
                                 </div>
-                                <button type="submit" className="p-2 mb-2 card w-100 d-flex flex-row justify-content-center align-items-center"><FcGoogle className='fs-3'></FcGoogle><span className='ms-2'>Login with google</span></button>
-                                <button type="submit" className="p-2 mb-2 card w-100 d-flex flex-row justify-content-center align-items-center"><SiGithub className='fs-3'></SiGithub><span className='ms-2'>Login with github</span></button>
                             </form>
+                            <Link className='text-decoration-none' onClick={handleGoogleSignIn} >
+                                <button type="submit" className="p-2 mb-2 card w-100 d-flex flex-row justify-content-center align-items-center"><FcGoogle className='fs-3'></FcGoogle><span className='ms-2'>Login with google</span></button>
+                            </Link>
+                            <Link className='text-decoration-none' onClick={handleGithubSignIn}>
+                                <button type="submit" className="p-2 mb-2 card w-100 d-flex flex-row justify-content-center align-items-center"><SiGithub className='fs-3'></SiGithub><span className='ms-2'>Login with github</span></button>
+                            </Link>
                         </div>
                     </div>
                 </div>
