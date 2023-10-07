@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FcGoogle } from "react-icons/fc";
 import { SiGithub } from 'react-icons/si';
@@ -6,12 +6,15 @@ import { UserContext } from '../authprovider/AuthProvider';
 
 
 const Login = () => {
-    const {user , signInUser, signInWithGooglePopUp, signInWithGitPopUp } = useContext(UserContext);
+    const { user, signInUser, signInWithGooglePopUp, signInWithGitPopUp } = useContext(UserContext);
 
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from?.pathname || "/";
-    
+
+    const [isUserValid, setIsUserValid] = useState(false);
+
+
 
     const submit = (event) => {
         event.preventDefault();
@@ -20,10 +23,12 @@ const Login = () => {
         const password = form.password.value;
         signInUser(username, password)
             .then((userCredentials) => {
+                setIsUserValid(false);
                 navigate(from)
                 form.reset();
             })
             .catch(error => {
+                setIsUserValid(true);
                 console.log(error.message);
             })
 
@@ -68,7 +73,13 @@ const Login = () => {
                                     <label htmlFor="password" className="form-label">Password</label>
                                     <input type="password" className="form-control" id="password" name="password" placeholder="Enter your password" required />
                                 </div>
+                                {
+                                    isUserValid ? 
+                                    <p className='text-danger'>Invalid Credentials</p>
+                                    : 
+                                    ""
 
+                                }
                                 <button type="submit" className="btn btn-primary">Login</button>
                                 <p className='pt-2 pb-2'>New to wanganama? <Link to='/registration' className='text-decoration-none'>Get started</Link></p>
                                 <div className='d-flex flex-row align-items-center'>

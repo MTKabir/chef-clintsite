@@ -1,13 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../authprovider/AuthProvider';
+import { RxCross1 } from "react-icons/rx";
 
 const Register = () => {
-    const { createUser, user } = useContext(UserContext);
+    const { createUser} = useContext(UserContext);
     const navigate = useNavigate();
+    const [onFocus,setOnFocus] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const regexPassword = /^(?=.*[!@#$%^&*])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
 
+    const handleOnFocus = () =>{
+        setOnFocus(true);
 
+    }
+    const handleOnBlur = () => {
+        setOnFocus(false);
+    }
+    const handlePassword = (event) =>{
+        setIsPasswordValid(regexPassword.test(event.target.value));
+    }
     const submit = (event) => {
         event.preventDefault();
         const form = event.target;
@@ -15,11 +28,12 @@ const Register = () => {
         const email = form.email.value;
         const password = form.password.value;
         const photo = form.photo.value;
-
+  
         createUser(email, password)
             .then(userCredentials => {
                 userCredentials.user.displayName = name;
                 userCredentials.user.photoURL = photo;
+                console.log(password)
                 form.reset();
                 navigate("/");
 
@@ -50,7 +64,21 @@ const Register = () => {
                                 </div>
                                 <div className="form-group mt-2">
                                     <label htmlFor="password">Password</label>
-                                    <input type="password" className="form-control" id="password" name="password" required />
+                                    {
+                                        onFocus? <RxCross1 className={isPasswordValid ? 'ms-2 mb-1 text-success' : 'ms-2 mb-1 text-danger'}></RxCross1>
+                                        :""
+                                    }
+                                    
+                                    <input 
+                                    type="password" 
+                                    className="form-control" 
+                                    id="password" 
+                                    name="password" 
+                                    onFocus = {handleOnFocus}
+                                    onBlur={handleOnBlur}
+                                    onChange={handlePassword}
+                                    required 
+                                    />
                                 </div>
                                 <div className="form-group mt-2">
                                     <label htmlFor="photo">Photo URL</label>
