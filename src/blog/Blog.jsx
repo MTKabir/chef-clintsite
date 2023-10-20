@@ -21,6 +21,12 @@ const Blog = () => {
                 <p className='fw-bold'>What is a custom hook, and why will i create a custom hook?</p>
                 <p>A custom hook is a reuseable JavaScript function. I will use it to make my code more clean and easy to undustandable.</p>
             </div>
+            <div className='col-6 vh-100'>
+
+            </div>
+            <div className='col-6 vh-100'>
+
+            </div>
         </div>
     );
 };
