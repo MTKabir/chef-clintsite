@@ -36,7 +36,7 @@ const router = createBrowserRouter([
             }, {
                 path: "/chef/:id",
                 element: <SingleChef></SingleChef>,
-                loader: ({ params }) => fetch(`http://localhost:4000/chef/${params.id}`)
+                loader: ({ params }) => fetch(`http://https://chef-serversite-kcxzpy5im-kabirs-projects-2d32aa3a.vercel.app:4000/chef/${params.id}`)
             }, {
                 path: "/registration",
                 element: <Register></Register>

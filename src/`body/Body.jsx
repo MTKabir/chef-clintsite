@@ -9,7 +9,7 @@ const Body = () => {
     const [btnClick, setBtnClick] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:4000/')
+        fetch('http://https://chef-serversite-kcxzpy5im-kabirs-projects-2d32aa3a.vercel.app:4000/')
             .then(res => res.json())
             .then(data => setChefs(data))
     }, [])
